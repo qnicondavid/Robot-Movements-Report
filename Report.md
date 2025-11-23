@@ -66,3 +66,156 @@ void moveSouth() {
   setMotor(BR_PWM, BR_DIR, motorSpeed, !BR_fw);
 }
 ```
+---
+## Horizontal Movements
+
+Horizontal movements correspond to sideways strafing: moving right (east) or left (west).
+
+With mecanum wheels, this is achieved by setting opposite diagonal wheels to rotate in opposite directions.
+
+### East (Strafe Right)
+To move the robot to the right:
+- Front-left and rear-right wheels rotate forward.
+- Front-right and rear-left wheels rotate backward.
+```cpp
+void moveEast() {
+  FL_speed = motorSpeed;
+  FR_speed = -motorSpeed;
+  BL_speed = -motorSpeed;
+  BR_speed = motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed,  FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed, !FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed, !BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed,  BR_fw);
+}
+```
+### West (Strafe Left)
+To move the robot to the left:
+- Front-left and rear-right wheels rotate backward.
+- Front-right and rear-left wheels rotate forward.
+```cpp
+void moveWest() {
+  FL_speed = -motorSpeed;
+  FR_speed = motorSpeed;
+  BL_speed = motorSpeed;
+  BR_speed = -motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed, !FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed,  FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed,  BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed, !BR_fw);
+}
+```
+---
+## Diagonal Movements
+
+Diagonal movements allow the robot to move **northeast, northwest, southeast, or southwest**. 
+
+With mecanum wheels, only the two wheels along the intended diagonal direction are powered, while the other two are stopped. 
+
+This produces a smooth diagonal motion.  
+### North-East (Forward-Right)
+
+- **Front-left and rear-right wheels** move forward.  
+- **Front-right and rear-left wheels** are stopped.  
+
+```cpp
+void moveNorthEast() {
+  movingNorthEast = true;
+  FL_speed = motorSpeed;
+  FR_speed = 0;
+  BL_speed = 0;
+  BR_speed = motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed,  FL_fw);
+  setMotor(FR_PWM, FR_DIR, 0,           true);
+  setMotor(BL_PWM, BL_DIR, 0,           true);
+  setMotor(BR_PWM, BR_DIR, motorSpeed,  BR_fw);
+}
+```
+### North-West (Forward-Left)
+- **Front-right and rear-left wheels** move forward.
+- **Front-left and rear-right wheels** are stopped.
+```cpp
+void moveNorthWest() {
+  movingNorthWest = true;
+  FL_speed = 0;
+  FR_speed = motorSpeed;
+  BL_speed = motorSpeed;
+  BR_speed = 0;
+  setMotor(FL_PWM, FL_DIR, 0,           true);
+  setMotor(FR_PWM, FR_DIR, motorSpeed,  FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed,  BL_fw);
+  setMotor(BR_PWM, BR_DIR, 0,           true);
+}
+```
+### South-East (Backward-Right) 
+- **Front-right and rear-left wheels** move backward.
+- **Front-left and rear-right wheels** are stopped.
+```cpp
+void moveSouthEast() {
+  FL_speed = 0;
+  FR_speed = -motorSpeed;
+  BL_speed = -motorSpeed;
+  BR_speed = 0;
+  setMotor(FL_PWM, FL_DIR, 0,            true);
+  setMotor(FR_PWM, FR_DIR, motorSpeed,  !FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed,  !BL_fw);
+  setMotor(BR_PWM, BR_DIR, 0,            true);
+}
+```
+### South-West (Backward-Left)
+- **Front-left and rear-right** wheels move backward.
+- **Front-right and rear-left** wheels are stopped.
+```cpp
+void moveSouthWest() {
+  FL_speed = -motorSpeed;
+  FR_speed = 0;
+  BL_speed = 0;
+  BR_speed = -motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed,  !FL_fw);
+  setMotor(FR_PWM, FR_DIR, 0,            true);
+  setMotor(BL_PWM, BL_DIR, 0,            true);
+  setMotor(BR_PWM, BR_DIR, motorSpeed,  !BR_fw);
+}
+```
+
+---
+## Rotations
+
+Rotational movements allow the robot to **turn clockwise (CW)** or **counter-clockwise (CCW)** in place. 
+
+With mecanum wheels, rotation is achieved by spinning the left and right wheels in **opposite directions**.
+
+### Rotate Clockwise (CW)
+
+- **Front-left and rear-left wheels** move forward.  
+- **Front-right and rear-right wheels** move backward.  
+- This causes the robot to rotate around its center to the right.
+
+```cpp
+void rotateClockwise() {
+  FL_speed = motorSpeed;
+  FR_speed = -motorSpeed;
+  BL_speed = motorSpeed;
+  BR_speed = -motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed,  FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed, !FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed,  BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed, !BR_fw);
+}
+```
+### Rotate Counter-Clockwise (CCW)
+- **Front-left and rear-left wheels** move backward.
+- **Front-right and rear-right wheels** move forward.
+- This causes the robot to rotate around its center to the left.
+```cpp
+void rotateCounterClockwise() {
+  FL_speed = -motorSpeed;
+  FR_speed = motorSpeed;
+  BL_speed = -motorSpeed;
+  BR_speed = motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed, !FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed,  FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed, !BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed,  BR_fw);
+}
+```
