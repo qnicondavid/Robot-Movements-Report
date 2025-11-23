@@ -28,3 +28,13 @@ void setMotor(int pwm, int dir, int speed, bool forward) {
 The global variable `motorSpeed` determines the `PWM` duty cycle (default 80). 
 
 Movements are implemented by applying appropriate direction patterns to each motor.
+
+---
+## Vertical Movements
+Vertical movements correspond to forward (north) and backward (south) directions of the robot.
+
+These movements involve all four mecanum wheels moving in the same direction.
+### North (Forward)
+To move the robot north, all four wheels rotate forward.
+
+This movement sets the `movingNorth` flag to `true` for logic tracking, and then calls `setMotor` for each wheel.
