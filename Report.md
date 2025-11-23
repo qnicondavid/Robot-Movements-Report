@@ -38,3 +38,31 @@ These movements involve all four mecanum wheels moving in the same direction.
 To move the robot north, all four wheels rotate forward.
 
 This movement sets the `movingNorth` flag to `true` for logic tracking, and then calls `setMotor` for each wheel.
+```cpp
+void moveNorth() {
+  movingNorth = true;
+  FL_speed = motorSpeed;
+  FR_speed = motorSpeed;
+  BL_speed = motorSpeed;
+  BR_speed = motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed,  FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed,  FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed,  BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed,  BR_fw);
+}
+```
+
+### South (Backward)
+To move the robot south, all four wheels rotate backward.
+```cpp
+void moveSouth() {
+  FL_speed = -motorSpeed;
+  FR_speed = -motorSpeed;
+  BL_speed = -motorSpeed;
+  BR_speed = -motorSpeed;
+  setMotor(FL_PWM, FL_DIR, motorSpeed, !FL_fw);
+  setMotor(FR_PWM, FR_DIR, motorSpeed, !FR_fw);
+  setMotor(BL_PWM, BL_DIR, motorSpeed, !BL_fw);
+  setMotor(BR_PWM, BR_DIR, motorSpeed, !BR_fw);
+}
+```
